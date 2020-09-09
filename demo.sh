@@ -22,11 +22,8 @@ export KUBECONFIG="${REPO_DIR}/kubeconfig"
 pei 'gcloud container clusters get-credentials agones-usc1-green --region us-central1'
 pei 'kubectl config rename-context gke_agones-demo-280722_us-central1_agones-usc1-green green'
 
-pei 'gcloud container clusters get-credentials agones-usc1-blue --region us-central1'
-pei 'kubectl config rename-context gke_agones-demo-280722_us-central1_agones-usc1-blue blue'
-
-kubectl config delete-context gke_agones-demo-280722_us-central1_agones-usc1-blue 2>&1>/dev/null
-kubectl config delete-context gke_agones-demo-280722_us-central1_agones-usc1-green 2>&1>/dev/null
+pei 'kubectl config delete-context green; gcloud container clusters get-credentials agones-usc1-blue --region us-central1'
+pei 'kubectl config delete-context blue; kubectl config rename-context gke_agones-demo-280722_us-central1_agones-usc1-blue blue'
 
 pei 'kubectl config get-contexts'
 

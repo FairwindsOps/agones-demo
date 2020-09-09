@@ -1,5 +1,5 @@
 kubeconfig
-.terraform/
+.terraform*
 terraform.tfstate.backup
 terraform.tfstate
 client.crt
