@@ -1,0 +1,43 @@
+---
+_references: {}
+namespace: gameserver
+repository: stable
+repositories:
+  incubator:
+    url: https://kubernetes-charts-incubator.storage.googleapis.com
+  stable:
+    url: https://kubernetes-charts.storage.googleapis.com
+  jetstack:
+    url: https://charts.jetstack.io
+  agones:
+    url: https://agones.dev/chart/stable
+minimum_versions:
+  helm: 3.3.1
+  reckoner: 3.2.1
+charts:
+  cert-manager:
+    chart: cert-manager
+    version: v0.15.1
+    namespace: cert-manager
+    repository: jetstack
+    hooks:
+      pre_install:
+      - kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.15.1/cert-manager.crds.yaml
+        && sleep 10
+    values:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 100Mi
+        limits:
+          cpu: 50m
+          memory: 100Mi
+  agones:
+    chart: agones
+    namespace: agones-system
+    version: 1.6.0
+    repository: agones
+    values:
+      gameserver:
+        namespaces:
+        - gameserver

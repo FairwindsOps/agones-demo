@@ -1,0 +1,6 @@
+policy:
+  type: Buffer
+  buffer:
+    bufferSize: 3
+    minReplicas: 3
+    maxReplicas: 20
