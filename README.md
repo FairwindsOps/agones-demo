@@ -21,5 +21,6 @@ Required Tools:
 * [gcloud cli](https://cloud.google.com/sdk/gcloud/)
 * [jq](https://stedolan.github.io/jq/)
 * `openssl` for generating client certificates
+* [agones-allocator-client](https://github.com/fairwindsops/agones-allocator-client)
 
 _NOTE: Some of these tools can be installed via [asdf](https://asdf-vm.com/) and I have included a .tool-versions file in this repo_

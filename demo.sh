@@ -49,6 +49,35 @@ pei 'kubectl --context blue get fleet,gameserver -n gameserver'
 # Generate a client certificate and add it to the allowed list
 p '# If needed, create a client cert. Then add that cert to the allow list in the Agones allocator'
 pei 'if [ ! -f client.crt ]; then openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout client.key -out client.crt; fi'
+
+# Configure allocator certificate
+p "# Create a certificate from resources/cert-template.yaml by filling in the allocator's IP Address"
+pe "kubectl --context green get services agones-allocator -n agones-system -o jsonpath='{.status.loadBalancer.ingress[0].ip}'"
+echo
+GREEN_IP=$(kubectl --context green get services agones-allocator -n agones-system -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+pe 'cat resources/cert-template.yaml | sed "s/__IP_ADDRESS__/${GREEN_IP}/g" | kubectl --context green apply -f -'
+pe "kubectl --context green get secret allocator-tls -n agones-system -ojsonpath='{.data.ca\.crt}' | base64 -d > ca-green.crt"
+PATCH="{\"data\": {\"tls-ca.crt\": \"$(cat ca-green.crt | base64)\"}}"
+pe 'echo $PATCH | jq .'
+pe 'kubectl -n agones-system --context green patch secret allocator-tls-ca --type merge -p "$PATCH"'
+
+pe "kubectl --context blue get services agones-allocator -n agones-system -o jsonpath='{.status.loadBalancer.ingress[0].ip}'"
+echo
+BLUE_IP=$(kubectl --context blue get services agones-allocator -n agones-system -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+pe 'cat resources/cert-template.yaml | sed "s/__IP_ADDRESS__/${BLUE_IP}/g" | kubectl --context blue apply -f -'
+pe "kubectl --context blue get secret allocator-tls -n agones-system -ojsonpath='{.data.ca\.crt}' | base64 -d > ca-blue.crt"
+PATCH="{\"data\": {\"tls-ca.crt\": \"$(cat ca-blue.crt | base64)\"}}"
+pe 'echo $PATCH | jq .'
+pe 'kubectl -n agones-system --context blue patch secret allocator-tls-ca --type merge -p "$PATCH"'
+
+# Allow the client
+p '# Now we add the client cert to the allowed list of client certs in the allocator by patching the allocator-client-ca secret'
 PATCH="{\"data\": {\"client.crt\": \"$(cat client.crt | base64)\"}}"
-pei 'kubectl --context green patch secret allocator-tls-ca --type merge -p "$PATCH"'
-pei 'kubectl --context blue patch secret allocator-tls-ca --type merge -p "$PATCH"'
+pe 'echo $PATCH | jq .'
+pe 'kubectl --context blue patch secret allocator-client-ca -n agones-system --type merge -p "${PATCH}"'
+pe 'kubectl --context green patch secret allocator-client-ca -n agones-system --type merge -p "${PATCH}"'
+
+
+pe 'agones-allocator-client allocate --ca-cert ca-green.crt --key client.key --cert client.crt --hosts=$GREEN_IP:443  -v10 --namespace gameserver -m'
+pe 'kubectl --context green get gs -n gameserver'
+pe 'kubectl --context blue get gs -n gameserver'
