@@ -17,10 +17,11 @@ This repository contains the code necessary to run my Kubevirtual demo of Agones
 Required Tools:
 
 * [Terraform](https://www.terraform.io/) - at least version `0.12.29`
-* [Reckoner](https://github.com/fairwindsops/reckoner) - at least version `4.2.0`
+* [reckoner](https://github.com/fairwindsops/reckoner) - at least version `4.2.0`
 * [gcloud cli](https://cloud.google.com/sdk/gcloud/)
 * [jq](https://stedolan.github.io/jq/)
 * `openssl` for generating client certificates
 * [agones-allocator-client](https://github.com/fairwindsops/agones-allocator-client)
+* `kubectl`
 
 _NOTE: Some of these tools can be installed via [asdf](https://asdf-vm.com/) and I have included a .tool-versions file in this repo_

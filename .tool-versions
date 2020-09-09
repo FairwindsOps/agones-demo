@@ -1,2 +1,4 @@
-terraform 0.12.29
+agones-allocator-client 0.2.0
+kubectl 1.18.8
 reckoner 4.2.0
+terraform 0.12.29

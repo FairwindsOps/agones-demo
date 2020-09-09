@@ -77,7 +77,11 @@ pe 'echo $PATCH | jq .'
 pe 'kubectl --context blue patch secret allocator-client-ca -n agones-system --type merge -p "${PATCH}"'
 pe 'kubectl --context green patch secret allocator-client-ca -n agones-system --type merge -p "${PATCH}"'
 
+p '# Restart the allocators so that they pull in the new certificates'
+pe 'kubectl --context green --namespace agones-system rollout restart deployment/agones-allocator'
+pe 'kubectl --context blue --namespace agones-system rollout restart deployment/agones-allocator'
 
-pe 'agones-allocator-client allocate --ca-cert ca-green.crt --key client.key --cert client.crt --hosts=$GREEN_IP:443  -v10 --namespace gameserver -m'
+p '# Allocate a gameserver by  sending a multicluster request to the green allocator'
+pe 'agones-allocator-client allocate --ca-cert ca-green.crt --key client.key --cert client.crt --hosts=$GREEN_IP:443  -v10 --namespace gameserver --multicluster'
 pe 'kubectl --context green get gs -n gameserver'
 pe 'kubectl --context blue get gs -n gameserver'
