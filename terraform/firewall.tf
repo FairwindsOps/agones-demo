@@ -5,7 +5,7 @@ resource "google_compute_firewall" "allow_game_server_blue" {
   target_tags = ["game-server"]
 
   allow {
-    protocol = "tcp"
+    protocol = "udp"
     ports    = ["7000-8000"]
   }
 }
@@ -17,7 +17,7 @@ resource "google_compute_firewall" "allow_game_server_green" {
   target_tags = ["game-server"]
 
   allow {
-    protocol = "tcp"
+    protocol = "udp"
     ports    = ["7000-8000"]
   }
 }
