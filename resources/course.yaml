@@ -14,6 +14,9 @@ repositories:
 minimum_versions:
   helm: 3.3.1
   reckoner: 3.2.1
+hooks:
+  pre_install:
+    - kubectl get ns gameserver 2>/dev/null || kubectl create ns gameserver
 charts:
   cert-manager:
     chart: cert-manager
@@ -24,6 +27,8 @@ charts:
       pre_install:
       - kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.15.1/cert-manager.crds.yaml
         && sleep 10
+      post_install:
+      - kubectl apply -f cluster-issuer.yaml
     values:
       resources:
         requests:
@@ -38,6 +43,6 @@ charts:
     version: 1.6.0
     repository: agones
     values:
-      gameserver:
+      gameservers:
         namespaces:
         - gameserver
