@@ -19,10 +19,10 @@ pei 'gcloud beta container clusters update agones-usc1-blue --update-addons=Isti
 # Kubeconfigs
 p '# Get access to the clusters and rename the contexts to more usable'
 export KUBECONFIG="${REPO_DIR}/kubeconfig"
-pei 'gcloud container clusters get-credentials agones-usc1-green --region us-central1'
+pei 'kubectl config delete-context green; gcloud container clusters get-credentials agones-usc1-green --region us-central1'
 pei 'kubectl config rename-context gke_agones-demo-280722_us-central1_agones-usc1-green green'
 
-pei 'kubectl config delete-context green; gcloud container clusters get-credentials agones-usc1-blue --region us-central1'
+pei 'gcloud container clusters get-credentials agones-usc1-blue --region us-central1'
 pei 'kubectl config delete-context blue; kubectl config rename-context gke_agones-demo-280722_us-central1_agones-usc1-blue blue'
 
 pei 'kubectl config get-contexts'

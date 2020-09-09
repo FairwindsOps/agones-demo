@@ -28,6 +28,8 @@ charts:
       - kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.15.1/cert-manager.crds.yaml
         && sleep 10
       post_install:
+      - kubectl -n cert-manager wait --for condition=READY $(kubectl get po -n cert-manager -lapp=webhook -oname)
+      - sleep 20
       - kubectl apply -f cluster-issuer.yaml
     values:
       resources:
