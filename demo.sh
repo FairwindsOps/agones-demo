@@ -9,7 +9,7 @@ REPO_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # Terraform
 p '# Run the Terraform'
-pe 'cd terraform; terraform init && terraform apply -auto-approve; cd ..'
+pe 'cd terraform; terraform init && terraform apply -auto-approve || terraform apply -auto-approve; cd ..'
 
 # Istio
 p '# Enable Istio on both clusters'
