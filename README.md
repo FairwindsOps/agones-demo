@@ -49,3 +49,7 @@ _NOTE: Some of these tools can be installed via [asdf](https://asdf-vm.com/) and
 First, you'll want to change the GCP project reference to whatever GCP project you are planning to use. You can grep for `agones-demo-280722` to find the references.
 
 Then just run `./demo.sh`.  This repo uses [demo-magic](https://github.com/paxtonhare/demo-magic), so you can pass some flags to it if the default behavior isn't what you want.
+
+### Teardown
+
+There is another demo script called `teardown.sh` that you can run. This will de-register the clusters, delete the helm releases, and then run a `terraform destroy`
