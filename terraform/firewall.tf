@@ -1,6 +1,6 @@
 resource "google_compute_firewall" "allow_game_server_blue" {
   name        = "game-server-${local.network_name_blue}"
-  description = "Allows the TCP port range for the game servers."
+  description = "Allows the UDP port range for the game servers."
   network     = local.network_name_blue
   target_tags = ["game-server"]
 
@@ -12,7 +12,7 @@ resource "google_compute_firewall" "allow_game_server_blue" {
 
 resource "google_compute_firewall" "allow_game_server_green" {
   name        = "game-server-${local.network_name_green}"
-  description = "Allows the TCP port range for the game servers."
+  description = "Allows the UDP port range for the game servers."
   network     = local.network_name_green
   target_tags = ["game-server"]
 
