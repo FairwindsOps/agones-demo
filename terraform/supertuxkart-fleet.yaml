@@ -21,7 +21,10 @@ template:
       spec:
         containers:
         - name: supertuxkart
-          image: gcr.io/agones-images/supertuxkart-example:0.2
+          image: quay.io/fairwinds/supertuxkart-agones:0.0.13
+          env:
+            - name: ENABLE_PLAYER_TRACKING
+              value: "true"
           resources:
             limit:
               cpu: "500m"
@@ -29,4 +32,3 @@ template:
             request:
               cpu: "500m"
               memory: "200Mi"
-

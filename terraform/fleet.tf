@@ -7,10 +7,15 @@ resource "google_game_services_game_server_deployment" "supertuxkart" {
 resource "google_game_services_game_server_deployment_rollout" "supertuxkart" {
   deployment_id              = google_game_services_game_server_deployment.supertuxkart.deployment_id
   default_game_server_config = google_game_services_game_server_config.supertuxkart.name
+  game_server_config_overrides {
+    realms_selector {
+      realms = ["${google_game_services_realm.us.realm_id}"]
+    }
+  }
 }
 
 
-## Simple UDP A Config
+## Supertuxkart Config
 resource "google_game_services_game_server_config" "supertuxkart" {
   config_id     = "supertuxkart"
   deployment_id = google_game_services_game_server_deployment.supertuxkart.deployment_id

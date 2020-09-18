@@ -3,7 +3,7 @@ terraform {
 }
 
 provider "google" {
-  version = ">=3.26.0"
+  version = ">=3.39.0"
   project = "agones-demo-280722"
   region  = "us-central1"
 }
