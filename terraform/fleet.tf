@@ -8,8 +8,9 @@ resource "google_game_services_game_server_deployment_rollout" "supertuxkart" {
   deployment_id              = google_game_services_game_server_deployment.supertuxkart.deployment_id
   default_game_server_config = google_game_services_game_server_config.supertuxkart.name
   game_server_config_overrides {
+    config_version = google_game_services_game_server_config.supertuxkart.id
     realms_selector {
-      realms = ["${google_game_services_realm.us.realm_id}"]
+      realms = ["${google_game_services_realm.us.id}"]
     }
   }
 }
@@ -29,5 +30,4 @@ resource "google_game_services_game_server_config" "supertuxkart" {
     name                  = "buffer"
     fleet_autoscaler_spec = jsonencode(yamldecode(file("autoscaler.yaml")))
   }
-
 }
