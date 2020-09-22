@@ -6,7 +6,8 @@ resource "google_game_services_game_server_deployment" "supertuxkart" {
 # Rollout
 resource "google_game_services_game_server_deployment_rollout" "supertuxkart" {
   deployment_id              = google_game_services_game_server_deployment.supertuxkart.deployment_id
-  default_game_server_config = google_game_services_game_server_config.supertuxkart.name
+  # Apply this config to only the realm in this demo. That way it doesn't conflict with other things.
+  default_game_server_config = ""
   game_server_config_overrides {
     config_version = google_game_services_game_server_config.supertuxkart.id
     realms_selector {
